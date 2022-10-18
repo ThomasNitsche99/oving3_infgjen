@@ -20,6 +20,7 @@ Split = read.split("\r\n\r\n")
 for par in Split.copy():
     if "Gutenberg" in par:
         Split.remove(par)
+        Split = Split
 
 
 #1.4 list of list containing each word in paragraph
@@ -108,7 +109,9 @@ LSI_matrixSim = gensim.similarities.MatrixSimilarity(LSI_corpus)
 
 #3.5
 ##this works, print the 3 first topics :D
-print(LSI_model.show_topics()[0:3])
+print("\n")
+print("LSI-topics:", LSI_model.show_topics()[0:3])
+print("\n")
 
 
 # --------------------------PART 4: Query  ------------------------------------------#
@@ -139,13 +142,18 @@ tfidfQ = tfidf_model[fixedQuery]
 #3 most relevant
 doc2similarity = enumerate(tfidf_MatrixSim[tfidfQ])
 sim = sorted(doc2similarity, key=lambda kv: -kv[1])[:3]
-print(sim)
-##fikse representasjon her
+print("Simularity: ", sim)
+id2token = dict((i,j) for j, i in dictionary_doccument.token2id.items())
+print("\n")
+for s in sim:
+    print("{:.400}\n".format(Split[s[0]]))
+print("\n")
 
 
 #4.4
 lsi_query = LSI_model[tfidfQ]
-print( "LSI_query" , sorted(lsi_query, key=lambda kv: -abs(kv[1]))[:3] ) 
+print( "LSI_query" , sorted(lsi_query, key=lambda kv: -abs(kv[1]))[:3] )
+print("\n") 
 
 topics = LSI_model.show_topics()[0:3]
 
